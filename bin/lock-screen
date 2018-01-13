@@ -1,0 +1,10 @@
+#!/bin/sh
+
+: ${LOCK_IMAGE:=$HOME/.config/i3/lock.png}
+
+screen_geom=$(xdpyinfo |grep '  dimensions:' |grep -E -o '[0-9]+x[0-9]+' |head -n1)
+if [ -n "$screen_geom" -a -e "$LOCK_IMAGE" ]; then
+    convert "$LOCK_IMAGE[$screen_geom!]" $HOME/.config/i3/lock.tmp.png
+fi
+
+i3lock --image $HOME/.config/i3/lock.tmp.png "$@"

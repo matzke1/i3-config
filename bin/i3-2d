@@ -1,0 +1,126 @@
+#!/bin/bash
+
+MAX_ROWS=5
+MAX_COLS=5
+SEPARATOR="."
+
+arg0="${0##*/}"
+
+# Remove double quotes from the input if one appears at both the front and the back,
+# otherwise return input as-is.
+strip_quotes() {
+    sed 's/^"\(.*\)"$/\1/'
+}
+
+# Name of focussed workspace without quotes
+get_focused_workspace() {
+    i3-msg -t get_workspaces |jq 'map(select(.focused)) | .[].name' |strip_quotes
+
+}
+
+# Given the name of a workspace, return it's 2d coordinate. The argument should
+# be an integer: 1 for the first dimension, 2 for the second dimension
+workspace_coord() {
+    local workspace="$1" dimension="$2"
+    local n=$(echo "$workspace" |cut -d"$SEPARATOR" -f$dimension -s |sed -n '/^[0-9]\+$/p')
+    [ "$n" = "" ] && n=0
+    echo $n
+}
+
+workspace_row() {
+    workspace_coord "$1" 1
+}
+
+workspace_col() {
+    workspace_coord "$1" 2
+}
+
+workspace_name() {
+    local row="$1" col="$2"
+    echo "${row}${SEPARATOR}${col}"
+}
+
+# Clip a number
+clip() {
+    local min=$1 n=$2 max=$3
+    if [ $n -lt $min ]; then
+	echo $min
+    elif [ $n -gt $max ]; then
+	echo $max
+    else
+	echo $n
+    fi
+}
+
+# Name of workspace relative to current workspace. If direction is invalid then return $1
+neighbor() {
+    local workspace="$1" direction="$2"
+    local row=$(workspace_row "$workspace")
+    local col=$(workspace_col "$workspace")
+
+    case "$direction" in
+	right) col=$[col+1] ;;
+	left)  col=$[col-1] ;;
+	up)    row=$[row-1] ;;
+	down)  row=$[row+1] ;;
+	*)
+	    echo "$workspace"
+	    return 0
+	    ;;
+    esac
+    workspace_name $(clip 1 $row $MAX_ROWS) $(clip 1 $col $MAX_COLS)
+}
+
+# Normalize workspace name.  If the name is "up", "down", "left", or "right" return
+# a neighbor of the current workspace, otherwise return the name as-is.
+normalize_name() {
+    local name="$1"
+    case "$name" in
+	up|down|left|right)
+	    neighbor "$(get_focused_workspace)" "$name"
+	    ;;
+	*)
+	    echo "$name"
+	    ;;
+    esac	    
+}
+
+# Change to workspace, creating it if necessary
+set_workspace() {
+    local ws="$(normalize_name "$1")"
+    [ "$ws" != "$(get_focused_workspace)" ] && i3-msg -t command workspace "$ws"
+}
+
+# Change name of workspace.
+rename_workspace() {
+    local old_ws="$1" new_ws="$(normalize_name "$2")"
+    [ "$new_ws" != "$old_ws" ] && i3-msg -t command rename workspace "$old_ws" to "$new_ws"
+}
+
+# Move current container to a different workspace
+move_container() {
+    new_ws="$(normalize_name "$1")"
+    old_ws="$(get_focused_workspace)"
+    [ "$old_ws" != "$new_ws" ] && i3-msg move container to workspace "$new_ws"
+}
+
+    
+
+    
+
+
+if [ "workspace" = "$1" ]; then
+    set_workspace "$2"
+
+elif [ "rename workspace to" = "$1 $2 $3" ]; then
+    # Change the name of current workspace
+    rename_workspace "$(get_focused_workspace)" "$4"
+
+elif [ "rename worksapce" = "$1 $2" -a "to" = "$4" ]; then
+    # Change name of specified ($3) workspace
+    rename_workspace "$3" "$5"
+
+elif [ "move container to workspace" = "$1 $2 $3 $4" ]; then
+    move_container "$5"
+
+fi

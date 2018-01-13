@@ -1,0 +1,5 @@
+#!/bin/bash
+vol=$(amixer -D pulse sget Master | sed -n '/Front Left: Playback/ s/.*\[\([0-9]\+\)%\].*/\1/p')
+nhash=$[vol % 10]
+#printf "[%-10s] %3d%%\n" $(printf "%*s" $nhash "" |tr ' ' '#') $vol
+echo "${vol}%"

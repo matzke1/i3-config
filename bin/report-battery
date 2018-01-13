@@ -1,0 +1,16 @@
+#!/bin/bash
+charge_pct=$(acpi -b |grep -E -o '[0-9]+%')
+echo $charge_pct
+
+# Short text
+echo
+
+# Color
+if [ ${charge%?} -le 15 ]; then
+    echo "#f3a808"
+else
+    echo "#00ff00"
+fi
+
+[ ${charge%?} -le 10 ] && exit 33
+exit 0

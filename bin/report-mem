@@ -1,0 +1,8 @@
+#!/bin/bash
+
+used_pct=$(free |grep '^Mem:' |awk '{printf "%1.0f", 100 * $3 / $2}')
+
+echo "${used_pct}%"
+
+[ "$used_pct" -gt 85 ] && exit 33
+exit 0

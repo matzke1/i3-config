@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Display the load average as the percent of total machine
+# capacity since this does not require the user to know
+# how many hardware threads are available.
+
+nprocs=$(grep '^processor' /proc/cpuinfo |wc -l)
+load_pct=$(awk -v nprocs=$nprocs '{printf "%1.0f", 100*$1/nprocs}' /proc/loadavg)
+echo "${load_pct}%"
+
+[ $load_pct -gt 100 ] && exit 33
+exit 0

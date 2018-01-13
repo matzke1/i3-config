@@ -1,0 +1,181 @@
+set $mod Mod4
+
+font pango:monospace 10
+
+new_window pixel 3
+focus_follows_mouse yes
+
+# Colors
+set $bg-normal      #191968
+set $bg-inactive    #101034
+set $bg-urgent      #dc143c
+set $txt-normal     #eeeeee
+set $txt-inactive   #babdb6
+set $txt-urgent     #ffffff
+
+set $bar            #000000
+set $separator      #444444
+set $statusline     #888a85
+
+# ColorClass            Title        Window       Border        Dir    Child
+# ColorClass            Border(*1)   Border(*2)   Text          Indic. Border(*3)
+client.focused          $bg-normal   $bg-normal   $txt-urgent   $bar   $bg-normal
+client.focused_inactive $bg-inactive $bg-inactive $txt-inactive $bar   $bg-inactive
+client.unfocused        $bg-inactive $bg-inactive $txt-inactive $bar   $bg-inactive
+client.urgent           $bg-urgent   $bg-urgent   $txt-normal   $bar   $bg-urgent
+
+# *1: "Title border" is the 1px border around the title bar.
+# *2: "Child border" is the frame around a window, although doesn't seem to have any effect.
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# Commands
+bindsym $mod+Return     exec i3-sensible-terminal
+bindsym $mod+d          exec dmenu_run -p run \
+                                 -sb "$bg-urgent" \
+                                 -nb "$bg-normal" -nf "$txt-normal" \
+                                 -fn Terminus-14
+
+# Speaker volume
+exec --no-startup-id "amixer -D pulse sset Master 0"
+bindsym XF86AudioRaiseVolume exec "amixer -D pulse sset Master '3%+'"
+bindsym XF86AudioLowerVolume exec "amixer -D pulse sset Master '3%-'"
+bindsym XF86AudioMute        exec "amixer -D pulse sset Master toggle"
+
+# Monitor brightness
+bindsym XF86MonBrightnessDown exec xbacklight -dec 5
+bindsym XF86MonBrightnessUp exec xbacklight -inc 10
+
+# change window focus
+bindsym $mod+Left       focus left
+bindsym $mod+Down       focus down
+bindsym $mod+Up         focus up
+bindsym $mod+Right      focus right
+bindsym $mod+a          focus parent
+bindsym $mod+space      focus mode_toggle
+bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+minus      scratchpad show
+
+# Workspace focus
+bindsym Control+Left	exec --no-startup-id ~/.config/i3/bin/i3-2d workspace left
+bindsym Control+Right   exec --no-startup-id ~/.config/i3/bin/i3-2d workspace right
+bindsym Control+Up      exec --no-startup-id ~/.config/i3/bin/i3-2d workspace up
+bindsym Control+Down    exec --no-startup-id ~/.config/i3/bin/i3-2d workspace down
+
+# move focused window
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up   move up
+bindsym $mod+Shift+Right move right
+
+# kill focused window
+bindsym $mod+Shift+q    kill
+
+# window effects
+bindsym $mod+button4 exec --no-startup-id compton-trans -c +10
+bindsym $mod+button5 exec --no-startup-id compton-trans -c -10
+bindsym $mod+o       exec --no-startup-id compton-trans -c 99
+bindsym $mod+Shift+o exec --no-startup-id compton-trans -c -10
+
+# layout
+bindsym $mod+h          split h
+bindsym $mod+v          split v
+bindsym $mod+s          layout stacking
+bindsym $mod+w          layout tabbed
+bindsym $mod+e          layout toggle split
+bindsym $mod+f          fullscreen toggle
+bindsym $mod+Shift+space floating toggle
+
+# switch to workspace
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+bindsym $mod+0 workspace 10
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+7 move container to workspace 7
+bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+9 move container to workspace 9
+bindsym $mod+Shift+0 move container to workspace 10
+
+# major window-manager operations
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r restart
+bindsym $mod+Shift+l exec --no-startup-id ~/.config/i3/bin/lock-screen
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+    # These bindings trigger as soon as you enter the resize mode
+
+    # Pressing left will shrink the window’s width.
+    # Pressing right will grow the window’s width.
+    # Pressing up will shrink the window’s height.
+    # Pressing down will grow the window’s height.
+    bindsym Left  resize shrink width  5 px or 5 ppt
+    bindsym Down  resize grow   height 5 px or 5 ppt
+    bindsym Up    resize shrink height 5 px or 5 ppt
+    bindsym Right resize grow   width  5 px or 5 ppt
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+r mode "resize"
+
+set $mode_system System (l)ock log(o)ut, (s)uspend, (h)ibernate, (r)eboot, (p)oweroff
+mode "$mode_system" {
+    bindsym l exec --no-startup-id ~/.config/i3/bin/exit-session lock,      mode "default"
+    bindsym o exec --no-startup-id ~/.config/i3/bin/exit-session logout,    mode "default"
+    bindsym s exec --no-startup-id ~/.config/i3/bin/exit-session suspend,   mode "default"
+    bindsym h exec --no-startup-id ~/.config/i3/bin/exit-session hibernate, mode "default"
+    bindsym r exec --no-startup-id ~/.config/i3/bin/exit-session reboot,    mode "default"
+    bindsym p exec --no-startup-id ~/.config/i3/bin/exit-session shutdown,  mode "default"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+Shift+e mode "$mode_system"
+
+
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+bar {
+    font            pango:Terminus, FontAwesome 10
+    position        top
+    status_command  i3blocks -c ~/.config/i3/i3blocks.conf
+    tray_output     primary
+
+    colors {
+        background  $bar
+        separator   $separator
+        statusline  $statusline
+
+        # ColorClass       Border     Background Text
+        active_workspace   $bg-normal $bg-normal $txt-normal
+        focused_workspace  $bg-urgent $bg-normal $txt-normal
+        inactive_workspace $separator $separator $txt-normal
+        urgent_workspace   $bg-urgent $bg-urgent $txt-normal
+    }
+}
+
+# Startup things
+exec --no-startup-id feh --bg-scale ~/.config/i3/background.png
+#exec --no-startup-id unclutter -root
+exec --no-startup-id redshift
+exec --no-startup-id dunst --config ~/.config/i3/dunst.conf
+exec --no-startup-id compton --config ~/.config/i3/compton.conf
+exec --no-startup-id xfce4-power-manager
+exec --no-startup-id xautolock -corners 000- -locker ~/.config/i3/bin/lock-screen -detectsleep
+exec --no-startup-id nm-applet
