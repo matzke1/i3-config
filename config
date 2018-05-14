@@ -1,3 +1,20 @@
+# Package to install first:
+#    compton
+#    dmenu
+#    dunst
+#    feh
+#    fonts-font-awesome
+#    i3
+#    i3blocks
+#    i3lock
+#    jq
+#    notify-bin
+#    redshift
+#    xautolock
+#    xfce4-power-manager
+#    xfonts-terminus
+
+
 set $mod Mod4
 
 font pango:monospace 10
@@ -38,10 +55,13 @@ bindsym $mod+d          exec dmenu_run -p run \
                                  -fn Terminus-14
 
 # Speaker volume
-exec --no-startup-id "amixer -D pulse sset Master 0"
-bindsym XF86AudioRaiseVolume exec "amixer -D pulse sset Master '3%+'"
-bindsym XF86AudioLowerVolume exec "amixer -D pulse sset Master '3%-'"
+exec --no-startup-id "amixer -D pulse sset Master 100"
 bindsym XF86AudioMute        exec "amixer -D pulse sset Master toggle"
+bindsym XF86AudioLowerVolume exec "amixer -D pulse sset Master '3%-'"
+bindsym XF86AudioRaiseVolume exec "amixer -D pulse sset Master '3%+'"
+bindsym $mod+F1              exec "amixer -D pulse sset Master toggle"
+bindsym $mod+F2              exec "amixer -D pulse sset Master '3%-'"
+bindsym $mod+F3              exec "amixer -D pulse sset Master '3%+'"
 
 # Monitor brightness
 bindsym XF86MonBrightnessDown exec xbacklight -dec 5
@@ -116,6 +136,9 @@ bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 bindsym $mod+Shift+l exec --no-startup-id ~/.config/i3/bin/lock-screen
 
+# Applications that don't work properly
+for_window [class="^rdesktop"] floating disable
+
 # resize window (you can also use the mouse for that)
 mode "resize" {
     # These bindings trigger as soon as you enter the resize mode
@@ -175,7 +198,7 @@ exec --no-startup-id feh --bg-scale ~/.config/i3/background.png
 #exec --no-startup-id unclutter -root
 exec --no-startup-id redshift
 exec --no-startup-id dunst --config ~/.config/i3/dunst.conf
-exec --no-startup-id compton --config ~/.config/i3/compton.conf
+exec --no-startup-id ~/.config/i3/bin/maybe-run-compton --config ~/.config/i3/compton.conf
 exec --no-startup-id xfce4-power-manager
 exec --no-startup-id xautolock -corners 000- -locker ~/.config/i3/bin/lock-screen -detectsleep
-exec --no-startup-id nm-applet
+#exec --no-startup-id nm-applet

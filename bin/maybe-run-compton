@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Many machines don't have the capacity to run a compositing window manager
+# with blurring effets.
+
+case $(hostname) in
+    bonaparte|wisconsin|wortheni)
+	exec compton "$@"
+	;;
+esac
+exit 0
