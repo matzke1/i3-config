@@ -13,6 +13,26 @@ often the key whose label looks like a two-by-two grid of squares
 drawn by a child without the use of a ruler).  The main exception is
 workspace switching, which uses the `Ctrl` modifier.
 
+## Prerequisites
+
+The following Debian/Mint/Ubuntu packages should be installed if you
+want to use all the features of the configuration:
+
+* compton
+* dmenu
+* dunst
+* feh
+* fonts-font-awesome
+* i3
+* i3blocks
+* i3lock
+* jq
+* notify-bin
+* redshift
+* xautolock
+* xfce4-power-manager
+* xfonts-terminus
+
 ## Multiple Outputs
 
 Each output (e.g., monitor, projector) can have its own 2d array of
@@ -143,5 +163,21 @@ percent, and main IP address.  The CPU usage is normalized to be
 between 0 and 100 regardless of how many CPUs, cores, and hardware
 threads are available.
 
-## Other features
+## Additional Notes and Other Features
 
+The author finds that the "terminator" terminal emulator works well
+with i3. It allows you to turn off the menubar and scrollbar and also
+responds well to resize events that are common in tiling window
+managers.
+
+The `feh` command is used to set the initial background. It's a shell
+one-liner to slowly cycle between your own backgrounds.
+
+The `redshift` program is used to decrease color temperature of the
+monitors at night so the colors appear "warmer" (i.e., more red).
+
+`Dunst` is used as the notification system because it's easy to
+configure and the style is consistent with i3's minimalism.
+
+Screen locking happens when the session is inactive for some amount of
+time.
