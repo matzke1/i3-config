@@ -1,5 +1,5 @@
 #!/bin/bash
-charge_pct=$(acpi -b |grep -E -o '[0-9]+%')
+charge_pct=$(acpi -b |grep -E -o '[0-9]+%' |head -n1)
 echo $charge_pct
 
 # Short text
