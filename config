@@ -142,6 +142,7 @@ bindsym $mod+Shift+l exec --no-startup-id ~/.config/i3/bin/lock-screen
 
 # Applications that don't work properly
 for_window [class="^rdesktop"] floating disable
+assign [class="^MPlayer"] 0
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
