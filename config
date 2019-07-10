@@ -11,6 +11,7 @@
 #    libnotify-bin
 #    redshift
 #    xautolock
+#    xdotool 
 #    xfce4-power-manager
 #    xfonts-terminus
 
@@ -74,10 +75,10 @@ bindsym $mod+F7 exec --no-startup-id adjust-nvbl dn
 bindsym $mod+F8 exec --no-startup-id adjust-nvbl up
 
 # change window focus
-bindsym $mod+Left       focus left
-bindsym $mod+Down       focus down
-bindsym $mod+Up         focus up
-bindsym $mod+Right      focus right
+bindsym $mod+Left       focus left; exec --no-startup-id xdotool getactivewindow mousemove --window %1 --polar 0 0
+bindsym $mod+Down       focus down; exec --no-startup-id xdotool getactivewindow mousemove --window %1 --polar 0 0
+bindsym $mod+Up         focus up; exec --no-startup-id xdotool getactivewindow mousemove --window %1 --polar 0 0
+bindsym $mod+Right      focus right; exec --no-startup-id xdotool getactivewindow mousemove --window %1 --polar 0 0
 bindsym $mod+a          focus parent
 bindsym $mod+space      focus mode_toggle
 bindsym $mod+Shift+minus move scratchpad
@@ -144,6 +145,7 @@ bindsym $mod+Shift+l exec --no-startup-id ~/.config/i3/bin/lock-screen
 
 # Applications that don't work properly
 for_window [class="^rdesktop"] floating disable
+assign [class="^MPlayer"] 0
 
 # resize window (you can also use the mouse for that)
 mode "resize" {

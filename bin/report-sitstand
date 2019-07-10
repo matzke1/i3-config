@@ -1,0 +1,8 @@
+#!/bin/bash
+
+minute=$(date +%M)
+if [ "$minute" -lt 30 ]; then
+    echo "stand"
+else
+    echo " sit ";
+fi

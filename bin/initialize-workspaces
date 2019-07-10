@@ -2,8 +2,8 @@
 
 case "$(hostname)" in
     bonaparte)
-        i3-msg rename workspace 1 to 1.1.L
-        i3-msg rename workspace 2 to 1.1.R
+        i3-msg rename workspace 1 to 1.1.R
+        i3-msg rename workspace 2 to 1.1.L
         ;;
     *)
         i3-msg rename workspace 1 to 1.1.L
