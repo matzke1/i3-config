@@ -16,11 +16,14 @@
 
 
 set $mod Mod4
-set $fontsize 10
+set $fontsize 15
 
 font pango:monospace $fontsize
 
-new_window pixel 3
+# The "new_window" command is deprecated in newer versions of i3 and will be replace
+# eventually by default_border and default_floating_border.
+new_window pixel 6
+
 focus_follows_mouse yes
 
 # Colors
