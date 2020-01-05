@@ -4,7 +4,7 @@
 # with blurring effets.
 
 case $(hostname) in
-    bonaparte|wisconsin|wortheni)
+    atrogularis|bonaparte|wisconsin|wortheni)
 	exec compton "$@"
 	;;
 esac

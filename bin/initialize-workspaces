@@ -1,11 +1,24 @@
 #!/bin/bash
 
+if [ -x ~/.screenlayout/$(hostname).sh ]; then
+	~/.screenlayout/$(hostname).sh
+fi
+
 case "$(hostname)" in
     bonaparte)
         i3-msg rename workspace 1 to 1.1.L
         i3-msg rename workspace 2 to 1.1.R
         ;;
+    atrogularis)
+	i3-msg rename workspace 1 to 1.1.R
+	i3-msg rename workspace 2 to 1.1.L
+	i3-msg rename workspace 3 to 1.1.C
+	;;
     *)
-        i3-msg rename workspace 1 to 1.1
+        i3-msg rename workspace 1 to 1.1.L
         ;;
 esac
+
+# Wait for a couple seconds for things to settle before doing the background
+sleep 2
+feh --bg-scale ~/.config/i3/background.png
