@@ -206,7 +206,7 @@ exec --no-startup-id feh --bg-scale ~/.config/i3/background.png
 #exec --no-startup-id unclutter -root
 exec --no-startup-id redshift
 exec --no-startup-id dunst --config ~/.config/i3/dunst.conf
-exec --no-startup-id ~/.config/i3/bin/maybe-run-compton --config ~/.config/i3/compton.conf
+exec --no-startup-id ~/.config/i3/bin/maybe-run-compton
 exec --no-startup-id xfce4-power-manager
 exec --no-startup-id xautolock -corners 000- -locker ~/.config/i3/bin/lock-screen -detectsleep
 #exec --no-startup-id nm-applet

@@ -5,7 +5,10 @@
 
 case $(hostname) in
     bonaparte|wisconsin|wortheni)
-	exec compton "$@"
+	exec compton --config $HOME/.config/i3/compton.conf
+	;;
+    swainsonii)
+	exec compton --config $HOME/.config/i3/compton-swainsonii.conf
 	;;
 esac
 exit 0
