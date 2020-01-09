@@ -54,6 +54,7 @@ floating_modifier $mod
 
 # Commands
 bindsym $mod+Return     exec i3-sensible-terminal
+bindsym $mod+space	exec ~/.config/i3/bin/spacer
 bindsym $mod+d          exec dmenu_run -p run \
                                  -sb "$bg-urgent" \
                                  -nb "$bg-normal" -nf "$txt-normal" \
@@ -80,7 +81,6 @@ bindsym $mod+Down       focus down; exec --no-startup-id xdotool getactivewindow
 bindsym $mod+Up         focus up; exec --no-startup-id xdotool getactivewindow mousemove --window %1 --polar 0 0
 bindsym $mod+Right      focus right; exec --no-startup-id xdotool getactivewindow mousemove --window %1 --polar 0 0
 bindsym $mod+a          focus parent
-bindsym $mod+space      focus mode_toggle
 bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+minus      scratchpad show
 
